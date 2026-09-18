@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CampusFindIt - Next Generation Campus Lost and Found Portal with Real-Time Recovery and Interactive Features.">
+    <title>CampusFindIt | Campus Lost & Found Portal</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS (with Cache Busting v4.0) -->
+    <link rel="stylesheet" href="styles.css?v=4.0">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="brand-logo">
+                <div class="logo-badge">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+                <div class="brand-text">
+                    <h1 class="brand-title">Campus<span>FindIt</span></h1>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <button class="btn btn-gradient" id="btn-open-report-modal">
+                    <i class="fa-solid fa-plus"></i> Report Item
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-wrapper">
+        <div class="container">
+            <div class="hero-pill">
+                <span class="pulse-dot"></span> Live Campus Belongings Database
+            </div>
+            
+            <h1 class="hero-headline">Lost Something on Campus? <br><span class="text-gradient">We've Got You Covered.</span></h1>
+            
+            <p class="hero-subtext">
+                The official campus lost and found platform. Easily list found items, recover lost belongings, and reunite with your gear across all campus blocks.
+            </p>
+
+            <!-- Stats Banner -->
+            <div class="stats-banner" id="stats-banner">
+                <div class="stat-box" style="--stat-color: #d9a441; --stat-bg: rgba(217, 164, 65, 0.15);">
+                    <div class="stat-icon-wrap"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="stat-total">--</span>
+                        <span class="stat-title">Total Records</span>
+                    </div>
+                </div>
+
+                <div class="stat-box" style="--stat-color: #f43f5e; --stat-bg: rgba(244, 63, 94, 0.15);">
+                    <div class="stat-icon-wrap"><i class="fa-solid fa-circle-exclamation"></i></div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="stat-lost">--</span>
+                        <span class="stat-title">Currently Lost</span>
+                    </div>
+                </div>
+
+                <div class="stat-box" style="--stat-color: #10b981; --stat-bg: rgba(16, 185, 129, 0.15);">
+                    <div class="stat-icon-wrap"><i class="fa-solid fa-shield-heart"></i></div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="stat-found">--</span>
+                        <span class="stat-title">Found & Safe</span>
+                    </div>
+                </div>
+
+                <div class="stat-box" style="--stat-color: #a855f7; --stat-bg: rgba(168, 85, 247, 0.15);">
+                    <div class="stat-icon-wrap"><i class="fa-solid fa-heart-circle-check"></i></div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="stat-reunited">--</span>
+                        <span class="stat-title">Reunited</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main App Container -->
+    <main class="container" style="flex: 1; margin-bottom: 4rem;">
+
+        <!-- Quick Category Bar -->
+        <div class="category-quickbar" id="category-quickbar">
+            <button class="cat-pill active" data-cat="All"><i class="fa-solid fa-border-all"></i> All Categories</button>
+            <button class="cat-pill" data-cat="Electronics"><i class="fa-solid fa-laptop"></i> Electronics</button>
+            <button class="cat-pill" data-cat="ID & Wallet"><i class="fa-solid fa-id-card"></i> ID & Wallets</button>
+            <button class="cat-pill" data-cat="Keys"><i class="fa-solid fa-key"></i> Keys</button>
+            <button class="cat-pill" data-cat="Books"><i class="fa-solid fa-book"></i> Books & Notes</button>
+            <button class="cat-pill" data-cat="Apparel"><i class="fa-solid fa-shirt"></i> Apparel</button>
+            <button class="cat-pill" data-cat="Other"><i class="fa-solid fa-box-open"></i> Other</button>
+        </div>
+        
+        <!-- Filter and Search Bar -->
+        <div class="glass-panel search-filter-wrapper">
+            <div class="search-field-box">
+                <i class="fa-solid fa-magnifying-glass search-field-icon"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="Search by title, location (Library, CS Lab...), or description..." autocomplete="off">
+                <span class="search-shortcut-badge">Ctrl K</span>
+            </div>
+
+            <div class="filter-actions-row">
+                <!-- Status Filter Tabs -->
+                <div class="segmented-tabs" id="status-tabs-group">
+                    <button class="tab-btn active" data-type="" data-status="">All Items</button>
+                    <button class="tab-btn" data-type="LOST" data-status="OPEN">
+                        <i class="fa-solid fa-exclamation-circle" style="color: var(--lost-color);"></i> Lost
+                    </button>
+                    <button class="tab-btn" data-type="FOUND" data-status="OPEN">
+                        <i class="fa-solid fa-eye" style="color: var(--found-color);"></i> Found
+                    </button>
+                    <button class="tab-btn" data-type="" data-status="REUNITED">
+                        <i class="fa-solid fa-heart" style="color: var(--reunited-color);"></i> Reunited
+                    </button>
+                </div>
+
+                <!-- Dropdown Category Select -->
+                <div class="select-box-wrap">
+                    <i class="fa-solid fa-filter select-box-icon"></i>
+                    <select id="category-select" class="select-custom">
+                        <option value="All">All Categories</option>
+                        <option value="Electronics">Electronics & Gadgets</option>
+                        <option value="ID & Wallet">ID Cards & Wallets</option>
+                        <option value="Keys">Keys</option>
+                        <option value="Books">Books & Stationary</option>
+                        <option value="Apparel">Apparel & Bags</option>
+                        <option value="Other">Other Belongings</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards Section Header -->
+        <div class="section-header-bar">
+            <h2 class="section-heading" id="section-heading">Browse Belongings</h2>
+            <span class="count-badge-pill" id="count-badge-pill">Showing 0 items</span>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="cards-grid" id="cards-grid">
+            <div class="empty-box">
+                <div class="empty-icon-circle"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                <h3>Loading SQLite database records...</h3>
+            </div>
+        </div>
+
+        <!-- Empty State UI -->
+        <div class="empty-box hidden" id="empty-state-box">
+            <div class="empty-icon-circle"><i class="fa-solid fa-folder-open"></i></div>
+            <h3>No matching items found</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Try clearing search filters or report a new lost/found item.</p>
+            <button class="btn btn-glass" id="btn-reset-filters">Reset Filters</button>
+        </div>
+    </main>
+
+    <!-- Floating Action Button (FAB) -->
+    <button class="fab-btn" id="fab-report-btn" title="Report New Item">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <!-- Modal: Report Item -->
+    <div class="modal-overlay-bg hidden" id="report-modal">
+        <div class="modal-card">
+            <div class="modal-top">
+                <h3 class="modal-top-title"><i class="fa-solid fa-file-circle-plus"></i> Report Item</h3>
+                <button class="btn-close-x" id="btn-close-report"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form id="report-form" class="modal-form-grid">
+                
+                <div class="input-group">
+                    <label>Item Status <span class="req-star">*</span></label>
+                    <div class="radio-tile-row">
+                        <label class="radio-tile-label">
+                            <input type="radio" name="form_type" value="LOST" checked>
+                            <span class="radio-tile-box tile-lost"><i class="fa-solid fa-exclamation-triangle"></i> I Lost Something</span>
+                        </label>
+                        <label class="radio-tile-label">
+                            <input type="radio" name="form_type" value="FOUND">
+                            <span class="radio-tile-box tile-found"><i class="fa-solid fa-hand-holding-heart"></i> I Found Something</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="form_title">Item Title <span class="req-star">*</span></label>
+                    <input type="text" id="form_title" class="input-control" placeholder="e.g. Wireless Noise Cancelling Headphones, Blue Wallet" required>
+                </div>
+
+                <div class="form-grid-2col">
+                    <div class="input-group">
+                        <label for="form_category">Category <span class="req-star">*</span></label>
+                        <select id="form_category" class="input-control" required>
+                            <option value="Electronics">Electronics & Gadgets</option>
+                            <option value="ID & Wallet">ID Cards & Wallets</option>
+                            <option value="Keys">Keys</option>
+                            <option value="Books">Books & Stationary</option>
+                            <option value="Apparel">Apparel & Bags</option>
+                            <option value="Other">Other Belongings</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="form_date">Date Lost / Found <span class="req-star">*</span></label>
+                        <input type="date" id="form_date" class="input-control" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="form_location">Campus Location <span class="req-star">*</span></label>
+                    <input type="text" id="form_location" class="input-control" placeholder="e.g. Central Library Reading Room 2, Canteen, CS Lab 3" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="form_description">Description & Identifying Features <span class="req-star">*</span></label>
+                    <textarea id="form_description" class="textarea-control" rows="3" placeholder="Provide distinct features, color, brand, scratches, or contents..." required></textarea>
+                </div>
+
+                <div class="form-grid-2col">
+                    <div class="input-group">
+                        <label for="form_contact_name">Your Name <span class="req-star">*</span></label>
+                        <input type="text" id="form_contact_name" class="input-control" placeholder="e.g. Rahul Sharma" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="form_contact_info">Contact Details <span class="req-star">*</span></label>
+                        <input type="text" id="form_contact_info" class="input-control" placeholder="e.g. 9876543210 or student@campus.edu" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="form_image_url">Image Link (Optional)</label>
+                    <input type="url" id="form_image_url" class="input-control" placeholder="https://images.unsplash.com/... or paste image link">
+                </div>
+
+                <div class="modal-bottom-actions">
+                    <button type="button" class="btn btn-glass" id="btn-cancel-report">Cancel</button>
+                    <button type="submit" class="btn btn-gradient">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: View Details -->
+    <div class="modal-overlay-bg hidden" id="details-modal">
+        <div class="modal-card">
+            <div class="modal-top">
+                <span class="badge-status" id="detail-type-badge">LOST</span>
+                <button class="btn-close-x" id="btn-close-details"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="detail-modal-layout">
+                <div class="detail-img-preview">
+                    <img id="detail-img" src="" alt="Item Preview">
+                </div>
+
+                <h2 id="detail-title" class="detail-title-heading">Item Title</h2>
+                
+                <div class="detail-chip-group">
+                    <span class="chip-item"><i class="fa-solid fa-layer-group"></i> <span id="detail-category">Category</span></span>
+                    <span class="chip-item"><i class="fa-solid fa-location-dot" style="color: var(--teal);"></i> <span id="detail-location">Location</span></span>
+                    <span class="chip-item"><i class="fa-solid fa-calendar-day"></i> <span id="detail-date">Date</span></span>
+                </div>
+
+                <div class="detail-desc-card">
+                    <label>Description & Notes</label>
+                    <p id="detail-desc">Full details...</p>
+                </div>
+
+                <div class="detail-contact-card">
+                    <label><i class="fa-solid fa-shield-halved"></i> Contact Person & Details</label>
+                    <p class="contact-name-txt" id="detail-contact-person">Name</p>
+                    <p class="contact-info-txt" id="detail-contact-info">Phone/Email</p>
+                </div>
+            </div>
+
+            <div class="modal-bottom-actions" style="justify-content: space-between;">
+                <button class="btn btn-glass" id="btn-delete-item" style="color: var(--lost-color); border-color: rgba(244, 63, 94, 0.3);">
+                    <i class="fa-solid fa-trash-can"></i> Delete
+                </button>
+                <button class="btn btn-gradient" id="btn-mark-reunited" style="background: linear-gradient(135deg, #a855f7, #7e22ce);">
+                    <i class="fa-solid fa-circle-check"></i> Mark as Reunited
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Stack -->
+    <div class="toast-stack" id="toast-stack"></div>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid var(--border-light); padding: 2rem 0; text-align: center; font-size: 0.85rem; color: var(--text-muted); background: rgba(11, 18, 25, 0.9);">
+        <div class="container">
+            <p>© 2026 CampusFindIt | Campus Lost & Found Web Portal</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript App -->
+    <script src="app.js"></script>
+</body>
+</html>
